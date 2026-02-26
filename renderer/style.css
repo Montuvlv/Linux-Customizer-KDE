@@ -1,77 +1,141 @@
+/* Import a clean modern font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+
+:root {
+    --dock-bg: rgba(15, 15, 15, 0.4);
+    --dock-blur: 25px;
+    --dock-border: rgba(255, 255, 255, 0.08);
+    --item-hover: rgba(255, 255, 255, 0.1);
+    --accent-glow: rgba(255, 255, 255, 0.2);
+    --indicator: rgba(255, 255, 255, 0.8);
+}
+
+/* Theme: Light Glass */
+body.theme-light {
+    --dock-bg: rgba(255, 255, 255, 0.3);
+    --dock-border: rgba(0, 0, 0, 0.1);
+    --item-hover: rgba(0, 0, 0, 0.05);
+    --accent-glow: rgba(0, 0, 0, 0.1);
+    --indicator: rgba(0, 0, 0, 0.6);
+}
+
+/* Theme: Vivid */
+body.theme-vivid {
+    --dock-bg: rgba(90, 20, 150, 0.3);
+    --dock-border: rgba(255, 255, 255, 0.2);
+    --accent-glow: rgba(180, 50, 255, 0.4);
+}
+
 body {
     margin: 0;
     padding: 0;
     overflow: hidden;
     background: transparent;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Inter', sans-serif;
+    cursor: default;
 }
 
 #dock-container {
     display: flex;
     justify-content: center;
-    padding-bottom: 10px;
+    padding: 20px;
+    /* Entrance Animation */
+    animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 #dock {
     display: flex;
     align-items: center;
-    background: rgba(15, 15, 15, 0.4);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 0.5px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
-    padding: 8px 12px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--dock-bg);
+    backdrop-filter: blur(var(--dock-blur)) saturate(180%);
+    border: 0.5px solid var(--dock-border);
+    border-radius: 22px;
+    padding: 10px 16px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.4);
+    /* Idle Floating Animation */
+    animation: float 4s ease-in-out infinite;
 }
 
-.app-item, .wallpaper-btn {
+.app-item, .wallpaper-btn, .theme-btn {
     position: relative;
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 4px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
+    margin: 0 6px;
+    cursor: pointer; /* Can be changed to custom URL cursor: url('cursor.png'), auto; */
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .icon {
-    font-size: 22px;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-    transition: filter 0.2s ease;
+    font-size: 24px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
 }
 
-/* Minimalist Hover: Scale up and brighten icon */
-.app-item:hover, .wallpaper-btn:hover {
-    transform: scale(1.15) translateY(-4px);
+/* Advanced Hover Effects */
+.app-item:hover, .wallpaper-btn:hover, .theme-btn:hover {
+    transform: scale(1.25) translateY(-10px);
+    filter: brightness(1.2);
 }
 
-.app-item:hover .icon, .wallpaper-btn:hover .icon {
-    filter: drop-shadow(0 4px 8px rgba(255,255,255,0.2));
+/* The "Magic Glow" */
+.app-item:hover::before {
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: var(--accent-glow);
+    border-radius: 50%;
+    filter: blur(15px);
+    z-index: -1;
+    animation: pulseGlow 2s infinite;
 }
 
 /* Active indicator dot */
 .app-item::after {
     content: '';
     position: absolute;
-    bottom: -4px;
-    width: 4px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.5);
+    bottom: -6px;
+    width: 5px;
+    height: 5px;
+    background: var(--indicator);
     border-radius: 50%;
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transform: scale(0);
+    transition: all 0.2s ease;
 }
 
 .app-item:hover::after {
     opacity: 1;
+    transform: scale(1);
 }
 
 .separator {
     width: 1px;
-    height: 24px;
-    background: rgba(255, 255, 255, 0.05);
-    margin: 0 12px;
+    height: 28px;
+    background: var(--dock-border);
+    margin: 0 14px;
+    opacity: 0.5;
+}
+
+/* Animations */
+@keyframes slideUp {
+    from { transform: translateY(100px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+@keyframes pulseGlow {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+/* Custom Cursor for Dock Items */
+.app-item, .wallpaper-btn, .theme-btn {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="1"><circle cx="12" cy="12" r="6"/></svg>') 12 12, pointer;
 }

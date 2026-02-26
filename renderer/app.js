@@ -1,3 +1,4 @@
+// App Launching Logic
 document.querySelectorAll('.app-item').forEach(item => {
     item.addEventListener('click', () => {
         const cmd = item.getAttribute('data-cmd');
@@ -5,6 +6,7 @@ document.querySelectorAll('.app-item').forEach(item => {
     });
 });
 
+// Wallpaper Logic
 const wallpaperBtn = document.querySelector('.wallpaper-btn');
 const wallpaperInput = document.getElementById('wallpaper-input');
 
@@ -15,15 +17,29 @@ wallpaperBtn.addEventListener('click', () => {
 wallpaperInput.addEventListener('change', async (event) => {
     const file = event.target.files[0];
     if (file) {
-        // In a real Electron app, we'd get the absolute path
-        // For this prototype, we're assuming path availability
-        // Since input[type=file] usually gives a fake path for security,
-        // we use this as a placeholder for the logic.
         const response = await window.linuxAPI.setWallpaper(file.path);
         if (response.success) {
-            alert('Wallpaper Changed!');
+            console.log('Wallpaper Changed!');
         } else {
             console.error(response.error);
         }
     }
+});
+
+// Theme Switching Logic
+const themeBtn = document.getElementById('theme-toggle');
+const themes = ['theme-dark', 'theme-light', 'theme-vivid'];
+let currentThemeIndex = 0;
+
+themeBtn.addEventListener('click', () => {
+    // Remove current theme class
+    document.body.classList.remove(themes[currentThemeIndex]);
+    
+    // Cycle to next theme
+    currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+    
+    // Add new theme class
+    document.body.classList.add(themes[currentThemeIndex]);
+    
+    console.log(`Theme changed to: ${themes[currentThemeIndex]}`);
 });
