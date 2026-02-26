@@ -2,31 +2,33 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>KDE Dock</title>
+    <title>KDE Minimal Dock</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="dock">
-        <!-- App Launcher Section -->
-        <div class="app-item" data-cmd="konsole" title="Terminal">
-            <span class="icon">💻</span>
-        </div>
-        <div class="app-item" data-cmd="firefox" title="Browser">
-            <span class="icon">🌐</span>
-        </div>
-        <div class="app-item" data-cmd="dolphin" title="Files">
-            <span class="icon">📁</span>
-        </div>
-        <div class="app-item" data-cmd="systemsettings" title="Settings">
-            <span class="icon">⚙️</span>
-        </div>
+    <div id="dock-container">
+        <div id="dock">
+            <!-- App Launcher Section -->
+            <div class="app-item" data-cmd="konsole" title="Terminal">
+                <span class="icon">💻</span>
+            </div>
+            <div class="app-item" data-cmd="firefox" title="Browser">
+                <span class="icon">🌐</span>
+            </div>
+            <div class="app-item" data-cmd="dolphin" title="Files">
+                <span class="icon">📁</span>
+            </div>
+            <div class="app-item" data-cmd="systemsettings" title="Settings">
+                <span class="icon">⚙️</span>
+            </div>
 
-        <div class="separator"></div>
+            <div class="separator"></div>
 
-        <!-- Wallpaper Picker (Simple Input for Prototype) -->
-        <div class="wallpaper-btn" title="Change Wallpaper">
-            <span class="icon">🖼️</span>
-            <input type="file" id="wallpaper-input" accept="image/*" hidden>
+            <!-- Wallpaper Picker -->
+            <div class="wallpaper-btn" title="Change Wallpaper">
+                <span class="icon">🖼️</span>
+                <input type="file" id="wallpaper-input" accept="image/*" hidden>
+            </div>
         </div>
     </div>
 

@@ -1,26 +1,25 @@
 const { app, BrowserWindow, ipcMain, screen } = require('electron');
 const path = require('node:path');
-const { exec } = require('child_process');
 
-// Backend functionality imports
 const wallpaperManager = require('./backend/wallpaper');
 const dockManager = require('./backend/dock');
 
 function createWindow() {
   const { width: screenWidth, height: screenHeight } = screen.getPrimaryDisplay().workAreaSize;
-  const dockWidth = 600;
-  const dockHeight = 80;
+  const dockWidth = 500; // Slightly narrower for minimal look
+  const dockHeight = 100;
 
   const win = new BrowserWindow({
     width: dockWidth,
     height: dockHeight,
     x: Math.floor((screenWidth - dockWidth) / 2),
-    y: screenHeight - dockHeight - 20, // 20px offset from bottom
-    frame: false, // Frameless
-    transparent: true, // Transparent for glassy effect
-    skipTaskbar: true, // Don't show in dock/taskbar
-    type: 'dock', // Linux-specific window type hint
+    y: screenHeight - dockHeight, 
+    frame: false,
+    transparent: true,
+    skipTaskbar: true,
+    type: 'dock',
     alwaysOnTop: true,
+    resizable: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
@@ -30,12 +29,14 @@ function createWindow() {
 
   win.loadFile('renderer/index.html');
   
-  // Ensure it stays at the bottom when resizing or switching workspaces
+  // High-level layering for Linux/KDE
   win.setAlwaysOnTop(true, 'screen-saver');
+  win.setVisibleOnAllWorkspaces(true);
 }
 
 app.whenReady().then(() => {
-  createWindow();
+  // Wait a small bit for system to settle
+  setTimeout(createWindow, 500);
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -46,7 +47,6 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
 
-// IPC Handlers for communication between Renderer and Backend
 ipcMain.handle('change-wallpaper', async (event, imagePath) => {
   return await wallpaperManager.setWallpaper(imagePath);
 });
