@@ -1,0 +1,22 @@
+{
+  "name": "linux-customizer",
+  "version": "1.0.0",
+  "description": "A customization tool for KDE Plasma built with Electron",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [
+    "linux",
+    "kde",
+    "plasma",
+    "customization",
+    "dock",
+    "wallpaper"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^30.0.0"
+  }
+}
