@@ -26,10 +26,14 @@ wallpaperInput.addEventListener('change', async (event) => {
     }
 });
 
-// Theme Switching Logic
+// Theme Logic with Persistence
 const themeBtn = document.getElementById('theme-toggle');
 const themes = ['theme-dark', 'theme-light', 'theme-vivid'];
-let currentThemeIndex = 0;
+
+// Load saved theme or default to dark
+let savedTheme = localStorage.getItem('dock-theme') || 'theme-dark';
+let currentThemeIndex = themes.indexOf(savedTheme);
+document.body.className = savedTheme;
 
 themeBtn.addEventListener('click', () => {
     // Remove current theme class
@@ -37,9 +41,11 @@ themeBtn.addEventListener('click', () => {
     
     // Cycle to next theme
     currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+    let nextTheme = themes[currentThemeIndex];
     
-    // Add new theme class
-    document.body.classList.add(themes[currentThemeIndex]);
+    // Add new theme class and save to storage
+    document.body.classList.add(nextTheme);
+    localStorage.setItem('dock-theme', nextTheme);
     
-    console.log(`Theme changed to: ${themes[currentThemeIndex]}`);
+    console.log(`Theme saved: ${nextTheme}`);
 });

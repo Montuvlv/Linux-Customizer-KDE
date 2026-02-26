@@ -6,7 +6,7 @@ const dockManager = require('./backend/dock');
 
 function createWindow() {
   const { width: screenWidth, height: screenHeight } = screen.getPrimaryDisplay().workAreaSize;
-  const dockWidth = 500; // Slightly narrower for minimal look
+  const dockWidth = 650; // Increased width for more apps
   const dockHeight = 100;
 
   const win = new BrowserWindow({
@@ -29,13 +29,11 @@ function createWindow() {
 
   win.loadFile('renderer/index.html');
   
-  // High-level layering for Linux/KDE
   win.setAlwaysOnTop(true, 'screen-saver');
   win.setVisibleOnAllWorkspaces(true);
 }
 
 app.whenReady().then(() => {
-  // Wait a small bit for system to settle
   setTimeout(createWindow, 500);
 
   app.on('activate', () => {
